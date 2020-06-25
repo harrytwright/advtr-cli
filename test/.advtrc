@@ -2,7 +2,7 @@ version: '1.0'
 
 services:
   binary:
-    name: geo
+    name: advtr-cli
     dockerfile: .
     default_tag: latest
     # These define custom cli arguments, the left side is the --build-arg
@@ -12,6 +12,10 @@ services:
       - NPM_TAG=npm
     before_build:
       - echo before_build
+    post_build:
+      - echo post_build
+    post_push:
+      - echo post_push
     rm: true
 #  database:
 #    name: geo-db

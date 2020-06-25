@@ -19,6 +19,7 @@
     file: path,
     loglevel: ['silent', 'error', 'notice', 'verbose'],
     'pass-args': Boolean,
+    push: Boolean,
     tag: [Array, String],
     usage: Boolean,
     user: [null, String],
@@ -29,10 +30,19 @@
     file: process.cwd(),
     loglevel: 'notice',
     'pass-args': false,
+    push: false,
     tag: null,
     usage: false,
     user: null,
   });
+
+  const kGlobalCommands = new Set([
+    'before_build',
+    'build',
+    'post_build',
+    'push',
+    'post_push',
+  ]);
 
   function DockerImage(data, build) {
     this.build = build;
@@ -40,6 +50,10 @@
     this.name = data.name;
     this.dockerfile = path.join(config.file, data.dockerfile || '.');
     this.defaultTag = data.defaultTag || 'latest';
+
+    this.before_build = data.before_build;
+    this.post_build = data.post_build;
+    this.post_push = data.post_push;
 
     this.parsedBuildArgs = new Map([]);
     if (data.build_arguments) {
@@ -96,6 +110,11 @@
     this.commands = cmds;
   }
 
+  function createStage(stage, image) {
+    if (!image[stage]) return null;
+    return new Stage(stage, image[stage]);
+  }
+
   function createBuildStage(image) {
     const createTag = (image_, tag) => {
       const base = `${registry.name === 'docker' ? config.user || require('os').userInfo().username : registry.url}`;
@@ -123,6 +142,26 @@
     ]);
   }
 
+  function createPushStage(image) {
+    const createTag = (image_, tag) => {
+      const base = `${registry.name === 'docker' ? config.user || require('os').userInfo().username : registry.url}`;
+      return `'${base}/${image_.name}:${tag}'`;
+    };
+
+    // https://github.com/docker/cli/issues/267#issuecomment-511052637
+    return new Stage('push', [
+      [
+        'echo',
+        Array.isArray(config.tag) ? (config.tag.map((tag) => createTag(image, tag))).join(' ') : createTag(image, config.tag || image.defaultTag),
+        '|',
+        'xargs',
+        '-n 1',
+        'docker',
+        'push'
+      ].join(' ')
+    ])
+  }
+
   // set status to 0 so we can build it before creation
   // will move it to
   function Builder(image, build, status = 0) {
@@ -133,8 +172,12 @@
     this.name = image.name;
 
     this.stages = [
+      createStage('before_build', image),
       createBuildStage(image),
-    ];
+      createStage('post_build', image),
+      config.push ? createPushStage(image) : null,
+      createStage('post_push', image),
+    ].filter((el) => el);
   }
 
   Builder.BuildStatus = {
@@ -155,7 +198,7 @@
   Builder.prototype.run = async function (stage, spinner = { text: '', fail: () => { } }) {
     this.status = Builder.BuildStatusMap[stage];
     // eslint-ignore no-param-reassign
-    spinner.text = `running ${stage}`;
+    spinner.text = `Running ${stage}`;
 
     const commands = this.stages
       .filter((stage_) => stage_.stage === stage)
@@ -168,9 +211,8 @@
       try {
         const { stdout } = await exec(command);
 
-        debug('\n========================\n');
+        debug('');
         debug(stdout);
-        debug('\n========================\n');
       } catch (err) {
         spinner.fail(err.message);
         process.exit(1);
@@ -184,6 +226,8 @@
   try {
     const fileContents = fs.readFileSync(path.join(config.file, '.advtrc'), 'utf8');
     data = require('js-yaml').safeLoad(fileContents);
+
+    assert.strictEqual(parseFloat(data.version), 1.0);
 
     /** Here is where we should validate the yaml */
     loadingSpinner.text = 'Validating .advtrc';
@@ -258,7 +302,9 @@
       spinner.stream = process.stdout;
       spinner.discardStdin = false;
 
-      await build.run('build');
+      for (const command of kGlobalCommands) {
+        await build.run(command, spinner);
+      }
 
       spinner.succeed(`Built ${build.build}\n`);
       console.timeEnd(`advtr:build:${build.build}`);
@@ -274,26 +320,4 @@
 
     process.exit(1);
   }).finally(() => process.exit(0));
-
-  // for (let i = 0; i < builds.length; i++) {
-  //   let build = builds[i];
-  //
-  //   console.log()
-  //   console.time(`advtr:build:${build.build}`)
-  //   const spinner = ora(`Running ${build.build}`).start();
-  //
-  //   spinner.succeed(`Built ${build.build}`)
-  //   console.timeEnd(`advtr:build:${build.build}`)
-  // }
-  //
-  // builds.forEach((build) => {
-  //   console.log()
-  //   console.time(`advtr:build:${build.build}`)
-  //   const spinner = ora(`Running ${build.build}`).start();
-  //
-  //   build.run('build', spinner);
-  //
-  //   spinner.succeed(`Built ${build.build}`)
-  //   console.timeEnd(`advtr:build:${build.build}`)
-  // });
 }());

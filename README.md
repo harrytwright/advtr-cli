@@ -1,7 +1,14 @@
+## Run
+
+To run the test `.advtrc` copy:
+```bash
+$ node ./bin/advtr-cli.js --file ./test --npm 1234567890
+```
+
 ## Roadmap
 
 - [X] Run terminal commands async
-- [ ] Run all commands from the `.advtrc` and keep them in order, may need to move to an `OrderedSet` than `Array`
+- [X] Run all commands from the `.advtrc` and keep them in order, may need to move to an `OrderedSet` than `Array`
 - [ ]  Have a `file:` option inside of `.advtrc` to overwrite `dockerfile:` if used
 - [ ]  PRUNE EVERYTHING
 - [ ]  Separate to `./lib/*.js` but without the need for multi command support like usual (Only when we have a fully working CLI)

@@ -16,6 +16,7 @@
         "global-require": "off",
         "no-await-in-loop": "off",
         "no-param-reassign": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "no-restricted-syntax": "off"
     }
 }
