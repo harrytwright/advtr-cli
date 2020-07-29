@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "advtr": "./bin/advtr-cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./bin/advtr-cli.js --fix"
@@ -12,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "js-yaml": "^3.14.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "nopt": "^4.0.3",
     "ora": "^4.0.4",
     "yaml-schema-validator": "^1.2.2"
