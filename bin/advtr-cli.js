@@ -23,6 +23,10 @@
     tag: [Array, String],
     usage: Boolean,
     user: [null, String],
+  }, {
+    'help': ['--usage'],
+    'T': ['--tag'],
+    'U': ['--user']
   });
 
   const _ = require('lodash');
@@ -35,6 +39,22 @@
     usage: false,
     user: null,
   });
+
+  if (config.usage) {
+    console.log([
+      'Advtr Dockerfile builder:',
+      '',
+      '  $ advtr --file .',
+      '',
+      'Options:',
+      '',
+      '  -T, --tag\tThe tag or version number, can be set multiple times',
+      '  -U, --user\tThe hub username',
+      '      --push\tBoolean option to tell advtr to publish the images',
+      '      --help\tShow help banner'
+    ].join('\n'))
+    return
+  }
 
   const kGlobalCommands = new Set([
     'before_build',
@@ -137,8 +157,8 @@
         Array.isArray(config.tag) ? (config.tag.map((tag) => createTag(image, tag))).join(' ') : createTag(image, config.tag || image.defaultTag),
         createEnvironmentVariables(image),
         image.removeArtifacts ? '--rm' : null,
-        `./${path.relative(process.cwd(), image.dockerfile)}`,
-      ].join(' ').trim(),
+        `${path.relative(process.cwd(), image.dockerfile) || '.'}`,
+      ].filter((el) => el).join(' ').trim(),
     ]);
   }
 
