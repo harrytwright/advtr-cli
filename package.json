@@ -7,8 +7,9 @@
     "advtr": "./bin/advtr-cli.js"
   },
   "scripts": {
-    "test": "mocha */**/*.test.js",
-    "lint": "eslint ./bin/advtr-cli.js --fix"
+    "test": "mocha test/**/*.test.js",
+    "lint": "eslint ./bin/advtr-cli.js --fix",
+    "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test"
   },
   "keywords": [],
   "author": "",
@@ -17,16 +18,17 @@
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.19",
     "nopt": "^4.0.3",
-    "ora": "^4.0.4",
+    "ora": "^4.0.5",
     "rimraf": "^3.0.2",
     "strip-json-comments": "^3.1.1",
     "yaml-schema-validator": "^1.2.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^7.3.1",
+    "eslint": "^7.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.2",
-    "mocha": "^8.1.0"
+    "eslint-plugin-import": "^2.22.0",
+    "mocha": "^8.1.0",
+    "nyc": "^15.0.0"
   }
 }

@@ -8,7 +8,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const rmdir = require('rimraf');
+const rmdir = require('rimraf')
 
 const _locations = new Set()
 
@@ -17,7 +17,7 @@ const _locations = new Set()
  * */
 process.on('exit', code => {
   _locations.forEach((dir) => {
-    rmdir.sync(dir);
+    rmdir.sync(dir)
   })
 
   process.exit(code)
@@ -27,25 +27,25 @@ process.on('exit', code => {
  * @typedef {Object} Files
  */
 
-module.exports.defineTempFiles = ({ cwd = process.cwd, files = {}} = {}) => {
-  fs.mkdirSync(cwd(), { recursive: true });
+module.exports.defineTempFiles = ({ cwd = process.cwd, files = {} } = {}) => {
+  fs.mkdirSync(cwd(), { recursive: true })
   _locations.add(cwd());
 
-  (function initFiles(directoryPath, definition) {
-      for (const [filename, content] of Object.entries(definition)) {
-        const filePath = path.resolve(directoryPath, filename);
-        const parentPath = path.dirname(filePath);
+  (function initFiles (directoryPath, definition) {
+    for (const [filename, content] of Object.entries(definition)) {
+      const filePath = path.resolve(directoryPath, filename)
+      const parentPath = path.dirname(filePath)
 
-        if (typeof content === "object") {
-          initFiles(filePath, content);
-        } else if (typeof content === "string") {
-          if (!fs.existsSync(parentPath)) {
-            fs.mkdirSync(parentPath, { recursive: true });
-          }
-          fs.writeFileSync(filePath, content);
-        } else {
-          throw new Error(`Invalid content: ${typeof content}`);
+      if (typeof content === 'object') {
+        initFiles(filePath, content)
+      } else if (typeof content === 'string') {
+        if (!fs.existsSync(parentPath)) {
+          fs.mkdirSync(parentPath, { recursive: true })
         }
+        fs.writeFileSync(filePath, content)
+      } else {
+        throw new Error(`Invalid content: ${typeof content}`)
       }
-    }(cwd(), files));
+    }
+  }(cwd(), files))
 }
