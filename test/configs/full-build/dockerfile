@@ -1,0 +1,6 @@
+FROM centos
+
+ARG REACT_APP_BASE_URL
+
+RUN echo $REACT_APP_BASE_URL
+

@@ -5,7 +5,7 @@ matrix:
     build_arguments:
       - REACT_APP_BASE_URL=example.com
   local:
-    file: /Users/harrywright/Frameworks/2020/advtr/tools/cli
+    file: ./test/config/full-build/dockerfile.local
     build_arguments:
       - REACT_APP_BASE_URL=localhost
 

@@ -69,7 +69,7 @@ describe('Extracted-Config', function () {
     it('should throw an error on invalid build argument', function () {
       const data = { binary: { name: 'advtr-cli', build_arguments: [{ argument: 'NODE_ENV' }] } }
       assert.throw(() => config.handleBuild(data))
-    });
+    })
 
     it('should set name to build if no name is passed', function () {
       const data = { binary: { } }
@@ -143,7 +143,7 @@ describe('Extracted-Config', function () {
       config.handleMatrices(data)
 
       assert.strictEqual(config.matrices[0].buildArguments.size, 1)
-      assert.deepStrictEqual(config.matrices[0].buildArguments, new Map([["NODE_ENV", "env"]]))
+      assert.deepStrictEqual(config.matrices[0].buildArguments, new Map([['NODE_ENV', 'env']]))
     })
   })
 
@@ -156,31 +156,31 @@ describe('Extracted-Config', function () {
     })
 
     it('should return the basic docker registry', function () {
-      let data = { docker: null }
+      const data = { docker: null }
       config.handleRegistry(data)
 
       assert.deepStrictEqual(config.registry, { docker: true })
-    });
+    })
 
     it('should return the github registry', function () {
-      let data = { github: { uri: 'docker.pkg.github.com' } }
+      const data = { github: { uri: 'docker.pkg.github.com' } }
       config.handleRegistry(data)
 
       assert.deepStrictEqual(config.registry, data)
-    });
+    })
 
     it('should return the github registry when url is passed', function () {
-      let data = { github: { url: 'docker.pkg.github.com' } }
+      const data = { github: { url: 'docker.pkg.github.com' } }
       config.handleRegistry(data)
 
       assert.deepStrictEqual(config.registry, {
         github: { uri: 'docker.pkg.github.com' }
       })
-    });
+    })
 
     it('should throw an error on an invalid registry', function () {
-      let data = { github: { http: 'docker.pkg.github.com' } }
+      const data = { github: { http: 'docker.pkg.github.com' } }
       assert.throw(() => config.handleRegistry(data))
-    });
+    })
   })
 })

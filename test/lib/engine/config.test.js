@@ -126,4 +126,25 @@ describe('ConfigFactory', function () {
       })
     }
   })
+
+  describe('loadConfigs', function () {
+    const where = path.join(process.cwd(), './test/configs')
+
+    /** @type {ConfigFactory} */
+    let factory
+
+    beforeEach(() => {
+      factory = new ConfigFactory({ cwd: where })
+    })
+
+    it('should load a full configuration file without throwing', function () {
+      const config = factory.loadInDirectory('full-build')
+
+      assert.strictEqual(config.builds.search.name, 'geo-search')
+      assert.strictEqual(config.matrices.length, 2)
+      assert.deepStrictEqual(config.registry, {
+        docker: true
+      })
+    })
+  })
 })
