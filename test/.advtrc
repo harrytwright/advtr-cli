@@ -5,9 +5,6 @@ services:
     name: advtr-cli
     dockerfile: .
     default_tag: latest
-    # These define custom cli arguments, the left side is the --build-arg
-    # and right the required --argument, all right side arguments will be
-    # required and will fail if not supplied unless `--pass-args` is supplied
     build_arguments:
       - NPM_TAG=npm
     before_build:
@@ -17,10 +14,6 @@ services:
     post_push:
       - echo post_push
     rm: true
-#  database:
-#    name: geo-db
-#    dockerfile: ./docker/database/
-#    default_tag: latest
 
 registry:
   docker:
