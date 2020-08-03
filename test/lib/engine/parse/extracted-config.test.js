@@ -86,6 +86,28 @@ describe('Extracted-Config', function () {
       assert.strictEqual(config.builds.binary.file, tempDir)
     })
 
+    it('should set dockerfile', function () {
+      const data = { binary: { dockerfile: './random/location' } }
+      config.handleBuild(data)
+
+      assert.strictEqual(config.builds.binary.dockerfile, './random/location')
+      assert.strictEqual(config.builds.binary.file, null)
+    })
+
+    it('should set default tag with snack_case', function () {
+      const data = { binary: { default_tag: 'default' } }
+      config.handleBuild(data)
+
+      assert.strictEqual(config.builds.binary.defaultTag, 'default')
+    })
+
+    it('should set default tag with camelCase', function () {
+      const data = { binary: { defaultTag: 'default' } }
+      config.handleBuild(data)
+
+      assert.strictEqual(config.builds.binary.defaultTag, 'default')
+    })
+
     it('should have a valid command inside prebuild', function () {
       const data = { binary: { prebuild: ['echo "hello world"'] } }
       config.handleBuild(data)
