@@ -9,3 +9,14 @@ node_js:
 git:
   depth:
     1
+
+
+jobs:
+  include:
+    - stage: lint
+      node_js: "node"
+      script: npm run lint
+    - stage: coverage
+      node_js: "node"
+      script: npm run coverage
+      after_script: npm run coverage:report

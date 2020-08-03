@@ -9,7 +9,7 @@ const path = require('path')
 
 const { assert } = require('chai')
 
-const { ConfigFactory } = require('../../../lib/engine/config')
+const { ConfigFactory } = require('../../../lib/engine/config-factory')
 
 const tempDir = path.join(os.tmpdir(), 'advtr/config-factory')
 
