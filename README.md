@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/harrytwright/advtr-cli.svg?branch=harrytwright%2Fcli-refactor)](https://travis-ci.org/harrytwright/advtr-cli)
+[![codecov](https://codecov.io/gh/harrytwright/advtr-cli/branch/harrytwright%2Fcli-refactor/graph/badge.svg)](https://codecov.io/gh/harrytwright/advtr-cli)
+
 ## Run
 
 To run the test `.advtrc` copy:
