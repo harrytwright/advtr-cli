@@ -37,7 +37,8 @@ Look into every sort of pruning, and have them as a base `$ advtr` argument, thi
 
 ### Matrix
 
-> Maybe a pipedream but sounds good
+> Could also add an `include/exclude` option so we can manipulate which service gets a matrix
+> if we're building more than one at a time??
 
 Similar to say `travis-ci` we could allow for multiple deployments from one build
 
