@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.7.2",
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.19",
     "nopt": "^4.0.3",
