@@ -12,6 +12,10 @@
     "coverage": "nyc --reporter=lcov --reporter=text-summary npm run test",
     "coverage:report": "codecov"
   },
+  "mocha": {
+    "ui": "bdd",
+    "reporter": "dot"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
