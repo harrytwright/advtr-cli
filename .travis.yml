@@ -20,3 +20,8 @@ jobs:
       node_js: "node"
       script: npm run coverage
       after_script: npm run coverage:report
+
+after_success:
+  - curl -s https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh | bash -s success $WEBHOOK_URL
+after_failure:
+  - curl -s https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh | bash -s failure $WEBHOOK_URL
