@@ -1,7 +1,0 @@
-FROM centos
-
-ARG NPM_TAG
-ARG DOCKER_TAG
-
-RUN echo $NPM_TOKEN && echo $DOCKER_TAG
-

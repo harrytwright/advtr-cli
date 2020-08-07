@@ -1,0 +1,19 @@
+version: '1.0'
+
+matrix:
+  react:
+    build_arguments:
+      - REACT_APP_BASE_URL=example.com
+  local:
+    file: ./test/config/full-build/dockerfile.local
+    build_arguments:
+      - REACT_APP_BASE_URL=localhost
+
+services:
+  search:
+    name: geo-search
+    build_arguments:
+      - REACT_APP_BASE_URL=uri
+
+registry:
+  docker:
