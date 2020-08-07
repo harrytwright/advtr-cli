@@ -11,11 +11,10 @@ const { assert } = require('chai')
 const { Docker, Github, Custom } = require('../../../../lib/engine/docker/registry')
 
 describe('Registry', function () {
-
   describe('docker', function () {
-    let config;
+    let config
 
-    before(function() {
+    before(function () {
       config = {
         username: env.username
       }
@@ -30,12 +29,12 @@ describe('Registry', function () {
 
       assert.strictEqual(docker.name, 'docker')
 
-      assert.strictEqual(docker.format,  `%{{username}}/%{{image}}:%{{tag}}`)
-    });
+      assert.strictEqual(docker.format, '%{{username}}/%{{image}}:%{{tag}}')
+    })
 
     it('should throw an error on invalid tag config', function () {
       assert.throw(() => new Docker().createTag({}))
-    });
+    })
 
     it('should generate a valid github tag', function () {
       const docker = new Docker().createTag({
@@ -47,14 +46,14 @@ describe('Registry', function () {
       // Will have to get username again for any environment
       // that a default usage will not suffice
       assert.strictEqual(docker, `${env.username}/cli:latest`)
-    });
-  });
+    })
+  })
 
   describe('github', function () {
-    let config;
+    let config
 
-    before(async function() {
-      let repo;
+    before(async function () {
+      let repo
       try {
         repo = await env.gitAsync()
       } catch (err) {
@@ -77,12 +76,12 @@ describe('Registry', function () {
 
       assert.strictEqual(github.name, 'github')
 
-      assert.strictEqual(github.format,  `%{{uri}}/%{{username}}/%{{repo}}/%{{image}}:%{{tag}}`)
-    });
+      assert.strictEqual(github.format, '%{{uri}}/%{{username}}/%{{repo}}/%{{image}}:%{{tag}}')
+    })
 
     it('should throw an error on invalid tag config', function () {
       assert.throw(() => new Github().createTag({}))
-    });
+    })
 
     it('should generate a valid github tag', function () {
       const github = new Github().createTag({
@@ -94,13 +93,13 @@ describe('Registry', function () {
       // Will have to get username again for any environment
       // that a default usage will not suffice
       assert.strictEqual(github, `docker.pkg.github.com/${env.username}/advtr-cli/cli:latest`)
-    });
-  });
+    })
+  })
 
   describe('custom', function () {
-    let config;
+    let config
 
-    before(async function() {
+    before(async function () {
       config = {
         username: env.username
       }
@@ -115,8 +114,8 @@ describe('Registry', function () {
 
       assert.strictEqual(custom.uri, 'docker.rsdv.co.uk')
 
-      assert.strictEqual(custom.format, `%{{uri}}/%{{username}}/%{{image}}:%{{tag}}`)
-    });
+      assert.strictEqual(custom.format, '%{{uri}}/%{{username}}/%{{image}}:%{{tag}}')
+    })
 
     it('should generate a valid custom tag', function () {
       const custom = new Custom('rsdv', 'docker.rsdv.co.uk').createTag({
@@ -126,7 +125,7 @@ describe('Registry', function () {
       })
 
       assert.strictEqual(custom, `docker.rsdv.co.uk/${env.username}/cli:latest`)
-    });
+    })
 
     it('should generate a valid github tag missing tag', function () {
       const custom = new Custom('rsdv', 'docker.rsdv.co.uk').createTag({
@@ -135,7 +134,6 @@ describe('Registry', function () {
       })
 
       assert.strictEqual(custom, `docker.rsdv.co.uk/${env.username}/cli:`)
-    });
-  });
-
+    })
+  })
 })
