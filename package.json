@@ -1,7 +1,7 @@
 {
-  "name": "cli",
+  "name": "@advtr/cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Docker image build tool",
   "main": "index.js",
   "bin": {
     "advtr": "./bin/advtr-cli.js"
@@ -10,9 +10,16 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./bin/advtr-cli.js --fix"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "bin/advtr-cli.js",
+    "README.md"
+  ],
+  "keywords": [
+    "docker",
+    "cli"
+  ],
+  "author": "Harry Wright",
+  "license": "MIT",
   "dependencies": {
     "js-yaml": "^3.14.0",
     "lodash": "^4.17.19",
