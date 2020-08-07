@@ -29,8 +29,8 @@
     U: ['--user']
   })
 
-  const _ = require('lodash')
-  const config = _.defaults(opts, {
+  const _ = require('lodash.defaults')
+  const config = _(opts, {
     file: process.cwd(),
     loglevel: 'notice',
     'pass-args': false,
