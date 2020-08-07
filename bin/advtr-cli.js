@@ -69,7 +69,7 @@
 
     this.name = data.name
     this.dockerfile = path.join(config.file, data.dockerfile || '.')
-    this.defaultTag = data.defaultTag || 'latest'
+    this.defaultTag = data.default_tag || 'latest'
 
     this.before_build = data.before_build
     this.post_build = data.post_build
