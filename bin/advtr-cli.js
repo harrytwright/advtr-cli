@@ -147,7 +147,7 @@
         variables.push(`--build-arg ${key}=${value}`)
       })
 
-      return variables.join()
+      return variables.join(' ')
     }
 
     return new Stage('build', [
